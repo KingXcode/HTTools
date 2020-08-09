@@ -337,9 +337,8 @@ AudioPlayerManagerNotification * const AudioPlayerErrorPlayingMusicNotification 
         if ([portDescription.portType isEqualToString:AVAudioSessionPortHeadphones] ||
             [portDescription.portType isEqualToString:AVAudioSessionPortBluetoothA2DP])
         {
-            UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
             AVAudioSession * session = [AVAudioSession sharedInstance];
-            [session setPreferredIOBufferDuration:audioRouteOverride error:nil];
+            [session setPreferredIOBufferDuration:1.f error:nil];
             //如果视频正在播放，会自动暂停，这里用来设置按钮图标
             [self pauseMusic];
         }

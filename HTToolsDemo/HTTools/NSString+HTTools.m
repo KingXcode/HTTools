@@ -80,4 +80,60 @@
         return result.stringValue;
     };
 }
+
+
+- (NSDecimalNumber *)standardToNumber {
+    if ([self isEqualToString:@""]) {
+        return [NSDecimalNumber decimalNumberWithString:@"0"];
+    }
+    return [NSDecimalNumber decimalNumberWithString:self];
+}
+
+
+
+/// 数字小数位数格式化与stepSize的小数位数相同
+-(NSString * _Nonnull (^)(NSDecimalNumber *stepSize))format;
+{
+    return ^NSString *(NSDecimalNumber *stepSize) {
+        NSInteger precision = ABS(stepSize.decimalValue._exponent);
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterDecimalStyle;
+        formatter.roundingMode = NSNumberFormatterRoundDown;
+        formatter.numberStyle = NSNumberFormatterDecimalStyle;
+        formatter.maximumFractionDigits = precision;
+        formatter.minimumFractionDigits = precision;
+        NSString *string = [formatter stringFromNumber:[self standardToNumber]];
+        return string;
+    };
+}
+
+
+/// 指定小数位数
+-(NSString * _Nonnull (^)(NSInteger precision))formatWithDigits;
+{
+    return ^NSString *(NSInteger precision) {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterDecimalStyle;
+        formatter.roundingMode = NSNumberFormatterRoundDown;
+        formatter.numberStyle = NSNumberFormatterDecimalStyle;
+        formatter.maximumFractionDigits = precision;
+        formatter.minimumFractionDigits = precision;
+        NSString *string = [formatter stringFromNumber:[self standardToNumber]];
+        return string;
+    };
+}
+\
+
+
+/**
+ 字符串判空 空字符串不算
+ */
+- (BOOL)isNull
+{
+    if ([[self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0) {
+        return YES;
+    }
+    return NO;
+}
+
 @end
